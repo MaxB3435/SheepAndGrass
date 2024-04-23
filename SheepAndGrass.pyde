@@ -1,19 +1,29 @@
+WHITE = color(255)
+BROWN = color(102,51,0)
+RED = color(255,0,0)
+GREEN = color(0,102,0)
+YELLOW = color(255,255,0)
+PURPLE = color(102,0,204)
+
+
+
+
 class Sheep:
     def __init__(self,x,y):
         self.x = x
         self.y = y
         self.sz = 10 #size
-        self.energy = 20
+        self.energy = 200
         
     
     def update(self):
         move = 1
         self.energy -= 1
-        if sheep.energy <= 0:
+        if self.energy <= 0:
             sheepList.remove(self)
         self.x += random(-move, move)
         self.y += random(-move, move)
-        fill(255)
+        fill(WHITE)
         ellipse(self.x,self.y,self.sz,self.sz)
         
 

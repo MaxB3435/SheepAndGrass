@@ -5,7 +5,8 @@ RED = color(255,0,0)
 GREEN = color(0,102,0)
 YELLOW = color(255,255,0)
 PURPLE = color(102,0,204)
-colorList = [WHITE,RED,YELLOW,PURPLE]
+LIME = color(38,255,10)
+colorList = [WHITE,RED,YELLOW,PURPLE,LIME]
 
 
 
@@ -16,13 +17,49 @@ class Sheep:
         self.sz = 10 #size
         self.energy = 20
         self.col = col
+        self.age = 0
         
     
     def update(self):
         move = 5
-        self.energy -= 1
+        self.energy -= 0.7
+        if self.col== RED:
+            if move < 15:
+                move += 1
+            if move >= 14:
+                self.energy -= 0.8
+        if self.col == LIME:
+            move = 2
+            self.energy += 0.5
+            self.age -= 0.9
+        if self.col == PURPLE:
+            self.age += 0.5
+            move = 5
+        
+        self.age += 1
+
+    
+            
         if self.energy <= 0:
             sheepList.remove(self)
+        elif self.age > 100:
+            sheepList.remove(self)
+            
+        if self.energy >= 50:
+            if self.col == LIME:
+                self.energy -= 45
+            elif self.col == PURPLE:
+                self.energy -= 10
+                sheepList.append(Sheep(self.x+random(0,10),self.y+random(0,10),self.col))
+                sheepList.append(Sheep(self.x+random(0,10),self.y+random(0,10),self.col))
+                
+                
+                
+            else:
+                self.energy -= 30 #giving brith takes energy
+            sheepList.append(Sheep(self.x,self.y,self.col))
+            
+            
         self.x += random(-move, move)
         self.y += random(-move, move)
         if self.x > width:
@@ -50,13 +87,16 @@ class Grass:
     def __init__(self,x,y,sz):
         self.x = x
         self.y = y
-        self.energy = 5 #energy from eating
+        self.energy = 4 #energy from eating
         self.eaten = False
         self.sz = sz
     
     def update(self):
         if self.eaten:
-            fill(BROWN)
+            if random(100) < 1:
+                self.eaten = False
+            else:
+                fill(BROWN)
         else:
             fill(GREEN)
         rect(self.x,self.y,self.sz,self.sz)

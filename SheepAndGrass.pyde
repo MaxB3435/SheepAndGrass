@@ -25,6 +25,7 @@ class Sheep:
     def wolfcheck(self):
         for wolf in wolfList:
             if dist(self.x,self.y,wolf.x,wolf.y) < wolf.sz/2:
+                wolf.energy += self.energy*0.8
                 self.eaten = True
         
 
@@ -117,12 +118,16 @@ class Wolf:
     def __init__(self,x,y,col):
         self.x = x
         self.y = y
-        self.sz = 15 #size
-#        self.energy = 20
+        self.sz = 20 #size
+        self.energy = 250
         self.col = col
 #        self.age = 0
     def update(self):
         move = 5
+        self.energy -=1
+        if self.energy <= 0:
+            wolfList.remove(self)
+    
         self.x += random(-move, move)
         self.y += random(-move, move)
         if self.x > width:
@@ -152,7 +157,7 @@ def setup():
     global patchSize
     global num_of_sheep
     size(600,600)
-    num_of_wolves = 2
+    num_of_wolves = 5
     rows_of_grass = height/patchSize
     noStroke()
     for a in range(num_of_wolves):

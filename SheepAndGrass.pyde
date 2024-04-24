@@ -23,6 +23,7 @@ class Sheep:
     def update(self):
         move = 5
         self.energy -= 0.7
+        self.sz = map(self.energy,0,50,7,15)
         if self.col== RED:
             if move < 15:
                 move += 1
@@ -101,10 +102,34 @@ class Grass:
             fill(GREEN)
         rect(self.x,self.y,self.sz,self.sz)
     
-    
+class Wolf:
+    def __init__(self,x,y,col):
+        self.x = x
+        self.y = y
+        self.sz = 15 #size
+#        self.energy = 20
+        self.col = col
+#        self.age = 0
+    def update(self):
+        move = 5
+        self.x += random(-move, move)
+        self.y += random(-move, move)
+        if self.x > width:
+            self.x %= width
+        if self.y > height:
+            self.y %= height
+        if self.x < 0:
+            self.x += width
+        if self.y < 0:
+            self.y += height
+        fill(self.col)
+        ellipse(self.x,self.y,self.sz,self.sz)         
+       
+        
+                    
       
         
-          
+wolfList = []    
 sheepList = []
 grassList = []
 patchSize = 5 # size of each patch of grass
@@ -116,6 +141,10 @@ def setup():
     size(600,600)
     rows_of_grass = height/patchSize
     noStroke()
+    for a in range(1):
+        wolfList.append(Wolf(random(width),
+                             random(height),
+                             color(200,200,200)))
     for i in range(20):
         sheepList.append(Sheep(random(width),
                                random(height),
@@ -134,3 +163,5 @@ def draw():
         
     for sheep in sheepList:
         sheep.update()
+    for wolf in wolfList:
+        wolf.update()
